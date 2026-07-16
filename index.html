@@ -6,969 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Jerome Balangue — graphic artist and video editor portfolio.">
     <title>Jerome Balangue | Portfolio</title>
-    <script>document.documentElement.classList.add("js");</script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Pinyon+Script&display=swap"
-        rel="stylesheet">
-    <link rel="preload" href="media/images/bg.png" as="image">
-    <link rel="preload" href="media/images/hero-cutout.png" as="image">
-    <link rel="preload" href="media/images/about-cutout-final.png" as="image">
-
-    <style>
-        :root {
-            color-scheme: dark;
-            --page-padding: clamp(1.5rem, 5.7vw, 5.5rem);
-            --sidebar-expanded: min(24rem, calc(100vw - 1.25rem));
-            --sidebar-rail: 6.25rem;
-            --sidebar-nav-clip: clamp(9.5rem, 27vh, 12.5rem);
-            --white: #f8f9fb;
-            --muted-white: rgba(248, 249, 251, 0.76);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            margin: 0;
-            min-height: 100%;
-            background: #020306;
-        }
-
-        body {
-            color: var(--white);
-            background: #020306;
-            font-family: "Manrope", Arial, sans-serif;
-        }
-
-        .page-view:not(.is-active) {
-            display: none;
-        }
-
-        .page-view.is-active {
-            animation: page-view-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        @keyframes page-view-enter {
-            from {
-                opacity: 0;
-                transform: translateY(0.75rem);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .nav-toggle {
-            position: fixed;
-            z-index: 33;
-            bottom: 2.2rem;
-            left: 1.75rem;
-            display: grid;
-            width: 3rem;
-            height: 3rem;
-            padding: 0;
-            border: 0;
-            border-radius: 50%;
-            background: transparent;
-            color: var(--white);
-            cursor: pointer;
-            place-content: center;
-            transition: transform 180ms ease;
-        }
-
-        .nav-toggle:hover,
-        .nav-toggle:focus-visible {
-            background: transparent;
-        }
-
-        .nav-toggle:focus-visible {
-            outline: 2px solid var(--white);
-            outline-offset: 0.2rem;
-        }
-
-        .nav-toggle__icon {
-            position: relative;
-            display: block;
-            width: 1rem;
-            height: 0.75rem;
-        }
-
-        .nav-toggle__icon::before,
-        .nav-toggle__icon::after,
-        .nav-toggle__icon span {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            border-radius: 999px;
-            background: currentColor;
-            content: "";
-            transition:
-                top 180ms ease,
-                opacity 180ms ease,
-                transform 180ms ease;
-        }
-
-        .nav-toggle__icon::before {
-            top: 0;
-        }
-
-        .nav-toggle__icon span {
-            top: 0.31rem;
-        }
-
-        .nav-toggle__icon::after {
-            top: 0.62rem;
-        }
-
-        .nav-toggle[aria-expanded="true"] .nav-toggle__icon::before {
-            top: 0.31rem;
-            transform: rotate(45deg);
-        }
-
-        .nav-toggle[aria-expanded="true"] .nav-toggle__icon span {
-            opacity: 0;
-        }
-
-        .nav-toggle[aria-expanded="true"] .nav-toggle__icon::after {
-            top: 0.31rem;
-            transform: rotate(-45deg);
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .toc-sidebar {
-            position: fixed;
-            z-index: 31;
-            inset: 0 auto 0 0;
-            width: var(--sidebar-rail);
-            overflow: hidden;
-            border-right: 1px solid rgba(255, 255, 255, 0.16);
-            background: rgba(0, 0, 0, 0.96);
-            box-shadow: 1rem 0 2.5rem rgba(0, 0, 0, 0.18);
-            transition:
-                width 280ms cubic-bezier(0.22, 1, 0.36, 1),
-                transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .toc-sidebar:not([data-open="true"])::before {
-            position: absolute;
-            z-index: 0;
-            inset: 0 auto 0 0;
-            width: 100%;
-            background: #171715;
-            content: "";
-            pointer-events: none;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .toc-sidebar:not([data-open="true"]):hover::before,
-        .toc-sidebar:not([data-open="true"]):focus-within::before {
-            transform: scaleX(1);
-        }
-
-        .toc-sidebar[data-open="true"] {
-            width: var(--sidebar-expanded);
-        }
-
-        .toc-sidebar__mark {
-            position: absolute;
-            z-index: 1;
-            top: 2.2rem;
-            left: 2rem;
-            width: 2.5rem;
-            height: 4rem;
-            border-radius: 999px;
-            background: #3a3834;
-            cursor: pointer;
-            transition: background-color 180ms ease;
-        }
-
-        .toc-sidebar__mark:hover,
-        .toc-sidebar__mark:focus-visible {
-            background: #57544f;
-        }
-
-        .toc-sidebar__mark:focus-visible {
-            outline: 2px solid var(--white);
-            outline-offset: 0.2rem;
-        }
-
-        .toc-sidebar__heading {
-            position: absolute;
-            top: 2.25rem;
-            left: var(--sidebar-rail);
-            width: calc(var(--sidebar-expanded) - var(--sidebar-rail) - 1.5rem);
-            opacity: 0;
-            transform: translateX(-0.75rem);
-            transition:
-                opacity 160ms ease,
-                transform 220ms ease;
-        }
-
-        .toc-sidebar[data-open="true"] .toc-sidebar__heading {
-            opacity: 1;
-            transform: translateX(0);
-            transition-delay: 90ms;
-        }
-
-        .toc-sidebar__eyebrow,
-        .toc-sidebar__title {
-            margin: 0;
-        }
-
-        .toc-sidebar__eyebrow {
-            color: rgba(255, 255, 255, 0.48);
-            font-size: 0.62rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        .toc-sidebar__title {
-            margin-top: 0.3rem;
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 1.35rem;
-            font-weight: 400;
-            letter-spacing: -0.035em;
-        }
-
-        .toc-sidebar__nav {
-            position: absolute;
-            z-index: 1;
-            inset: 7.5rem 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
-            scrollbar-width: thin;
-        }
-
-        .toc-sidebar__list {
-            display: grid;
-            gap: 0.16rem;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        .toc-sidebar__item {
-            min-width: var(--sidebar-expanded);
-        }
-
-        .toc-sidebar__link {
-            position: relative;
-            display: grid;
-            grid-template-columns: var(--sidebar-rail) 1fr;
-            align-items: center;
-            min-height: 3.15rem;
-            padding-right: 1.25rem;
-            color: rgba(255, 255, 255, 0.62);
-            text-decoration: none;
-            transition:
-                color 180ms ease,
-                background-color 180ms ease;
-        }
-
-        .toc-sidebar__link::before {
-            position: absolute;
-            inset: 0;
-            width: 0.16rem;
-            background: var(--white);
-            content: "";
-            opacity: 0;
-            transform: scaleY(0.35);
-            transition:
-                opacity 180ms ease,
-                transform 180ms ease;
-        }
-
-        .toc-sidebar__link:hover,
-        .toc-sidebar__link:focus-visible,
-        .toc-sidebar__link[aria-current="page"] {
-            color: var(--white);
-            background: rgba(255, 255, 255, 0.055);
-        }
-
-        .toc-sidebar__link:hover::before,
-        .toc-sidebar__link:focus-visible::before,
-        .toc-sidebar__link[aria-current="page"]::before {
-            opacity: 1;
-            transform: scaleY(1);
-        }
-
-        .toc-sidebar__link:focus-visible {
-            outline: 1px solid rgba(255, 255, 255, 0.7);
-            outline-offset: -2px;
-        }
-
-        .toc-sidebar__index {
-            color: var(--white);
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 1.02rem;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0.08em;
-            text-align: center;
-        }
-
-        .toc-sidebar__label {
-            min-width: 0;
-            overflow: hidden;
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 0.96rem;
-            letter-spacing: -0.02em;
-            opacity: 0;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transform: translateX(-0.75rem);
-            transition:
-                opacity 150ms ease,
-                transform 220ms ease;
-        }
-
-        .toc-sidebar[data-open="true"] .toc-sidebar__label {
-            opacity: 1;
-            transform: translateX(0);
-            transition-delay: 80ms;
-        }
-
-        .toc-sidebar__item--sub .toc-sidebar__link {
-            min-height: 2.65rem;
-        }
-
-        .toc-sidebar__item--sub .toc-sidebar__index,
-        .toc-sidebar__item--sub .toc-sidebar__label {
-            color: rgba(255, 255, 255, 0.52);
-            font-size: 0.83rem;
-        }
-
-        .toc-sidebar__item--sub .toc-sidebar__label {
-            padding-left: 1rem;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__item--sub {
-            display: none;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__nav {
-            inset: var(--sidebar-nav-clip) 0;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            scrollbar-width: none;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__nav::-webkit-scrollbar {
-            display: none;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__list {
-            gap: 0.62rem;
-            padding-block: 0.25rem 0.85rem;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__item {
-            width: var(--sidebar-rail);
-            min-width: 0;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link {
-            grid-template-columns: 1fr;
-            width: 100%;
-            min-height: 4.5rem;
-            padding: 0;
-            margin-inline: auto;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link::before {
-            inset: 0.25rem 0 0.25rem auto;
-            width: 1px;
-            height: auto;
-            background: var(--white);
-            opacity: 0;
-            transform: scaleY(0);
-            transform-origin: center;
-            transition:
-                opacity 180ms ease,
-                transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link::after {
-            position: absolute;
-            z-index: 0;
-            inset: 0 auto 0 0;
-            width: 100%;
-            background: #000;
-            content: "";
-            opacity: 0;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition:
-                opacity 150ms ease,
-                transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:hover,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:focus-visible,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link[aria-current="page"] {
-            background: transparent;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:hover::before,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:focus-visible::before,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link[aria-current="page"]::before {
-            opacity: 1;
-            transform: scaleY(1);
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:hover::after,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link:focus-visible::after,
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__link[aria-current="page"]::after {
-            opacity: 1;
-            transform: scaleX(1);
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__index {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            justify-items: center;
-            font-size: 1.16rem;
-            letter-spacing: 0.1em;
-            line-height: 1;
-        }
-
-        .toc-sidebar:not([data-open="true"]) .toc-sidebar__index::after {
-            margin-top: 0.48rem;
-            color: rgba(255, 255, 255, 0.64);
-            content: attr(data-keyword);
-            font-family: "Manrope", Arial, sans-serif;
-            font-size: 0.52rem;
-            font-weight: 700;
-            letter-spacing: 0.14em;
-            line-height: 1;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .toc-scrim {
-            position: fixed;
-            z-index: 30;
-            inset: 0;
-            border: 0;
-            background: rgba(0, 0, 0, 0.56);
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 220ms ease;
-        }
-
-        .landing {
-            position: relative;
-            isolation: isolate;
-            display: grid;
-            min-height: 100vh;
-            min-height: 100svh;
-            overflow: hidden;
-            background-color: #020306;
-            background-image: url("media/images/bg.png");
-            background-position: center;
-            background-size: cover;
-        }
-
-        .landing::after {
-            position: absolute;
-            z-index: -1;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 42%),
-                radial-gradient(circle at 50% 58%, transparent 25%, rgba(0, 0, 0, 0.12) 100%);
-            content: "";
-            pointer-events: none;
-        }
-
-        .topline {
-            position: absolute;
-            z-index: 4;
-            top: clamp(2rem, 9.5vh, 4.75rem);
-            right: var(--page-padding);
-            left: calc(var(--sidebar-rail) + var(--page-padding));
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-            font-size: clamp(0.78rem, 1.65vw, 1.3rem);
-            font-weight: 400;
-            letter-spacing: -0.025em;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-
-        .topline p {
-            margin: 0;
-        }
-
-        .portfolio-title {
-            position: absolute;
-            z-index: 1;
-            top: clamp(11rem, 27vh, 16rem);
-            left: 50%;
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            margin: 0;
-            color: var(--white);
-            filter: drop-shadow(0.16rem 0.2rem 0.32rem rgba(255, 255, 255, 0.6));
-            font-size: clamp(8.5rem, 20vw, 16rem);
-            font-weight: 400;
-            line-height: 0.72;
-            letter-spacing: -0.025em;
-            white-space: nowrap;
-            transform: translateX(-50%);
-        }
-
-        .portfolio-title__initial {
-            position: relative;
-            z-index: 1;
-            margin-right: 0.07em;
-            font-family: "Pinyon Script", "Times New Roman", cursive;
-            font-size: 1.62em;
-            font-weight: 400;
-            letter-spacing: -0.12em;
-            line-height: 0;
-            transform: translate(-0.075em, 0.017em) scaleX(0.885) scaleY(0.885);
-            transform-origin: right center;
-        }
-
-        .portfolio-title__rest {
-            position: relative;
-            display: inline-flex;
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 1em;
-            transform: translate(0.08em, -0.03em) scaleY(0.96);
-            transform-origin: center;
-        }
-
-        .portfolio-title__accent {
-            font-style: italic;
-        }
-
-        .portfolio-title__character {
-            opacity: 0;
-        }
-
-        .portfolio-title__character.is-typed {
-            opacity: 1;
-        }
-
-        .portfolio-title__cursor {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 0.76em;
-            font-style: normal;
-            font-weight: 300;
-            line-height: 1;
-            opacity: 1;
-            pointer-events: none;
-            transform: translate(0.04em, -60%);
-            transition: left 90ms ease-out;
-            animation: portfolio-cursor-blink 0.82s steps(1, end) infinite;
-        }
-
-        .portfolio-title__cursor.is-finished {
-            opacity: 0;
-            animation: none;
-            transition:
-                left 90ms ease-out,
-                opacity 240ms ease;
-        }
-
-        @keyframes portfolio-cursor-blink {
-            0%,
-            48% {
-                opacity: 1;
-            }
-
-            49%,
-            100% {
-                opacity: 0;
-            }
-        }
-
-        .portrait {
-            position: absolute;
-            z-index: 2;
-            bottom: -7%;
-            left: 50%;
-            display: block;
-            width: auto;
-            height: clamp(30rem, 70vh, 43rem);
-            max-width: 72vw;
-            object-fit: contain;
-            object-position: center bottom;
-            filter: drop-shadow(0 1.2rem 1.6rem rgba(0, 0, 0, 0.24));
-            transform: translateX(-50%);
-        }
-
-        .role {
-            position: absolute;
-            z-index: 3;
-            top: 64%;
-            left: 50%;
-            width: max-content;
-            max-width: calc(100% - 2rem);
-            margin: 0;
-            color: var(--muted-white);
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: clamp(1.05rem, 2.75vw, 2.25rem);
-            font-weight: 800;
-            letter-spacing: -0.015em;
-            line-height: 1;
-            text-align: center;
-            text-shadow: 0 0.18rem 0.45rem rgba(0, 0, 0, 0.9);
-            text-transform: uppercase;
-            transform: translate(-50%, -50%);
-        }
-
-        .about-section {
-            --about-content-max: 94rem;
-            position: relative;
-            isolation: isolate;
-            height: 100vh;
-            height: 100svh;
-            min-height: 42.5rem;
-            padding: clamp(5rem, 9vh, 5.5rem) var(--page-padding) 0 calc(var(--sidebar-rail) + var(--page-padding));
-            overflow: hidden;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.82);
-            background-color: #020306;
-            background-image: url("media/images/bg.png");
-            background-position: center;
-            background-size: cover;
-            scroll-margin-top: 0;
-        }
-
-        .about-section::after {
-            position: absolute;
-            z-index: -1;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 42%),
-                radial-gradient(circle at 50% 58%, transparent 25%, rgba(0, 0, 0, 0.12) 100%);
-            content: "";
-            pointer-events: none;
-        }
-
-        .about-section__inner {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            max-width: var(--about-content-max);
-            margin-inline: auto;
-        }
-
-        .about-section__title {
-            margin: 0 0 clamp(1.4rem, 3vh, 2rem);
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: clamp(3.6rem, 6.5vw, 5.5rem);
-            font-weight: 400;
-            letter-spacing: -0.065em;
-            line-height: 0.94;
-        }
-
-        .about-section__grid {
-            display: grid;
-            flex: 1;
-            grid-template-columns: auto minmax(24rem, 1fr);
-            align-items: stretch;
-            min-height: 0;
-            gap: clamp(5rem, 5vw, 5.5rem);
-        }
-
-        .about-section__visual {
-            position: relative;
-            align-self: stretch;
-            width: auto;
-            height: 100%;
-            min-height: 0;
-            aspect-ratio: 0.84;
-            margin: 0;
-            background: linear-gradient(90deg, #070616 0%, #151062 52%, #4934f4 100%);
-            transform: translateX(-1.65rem);
-        }
-
-        .about-section__portrait {
-            position: absolute;
-            z-index: 1;
-            bottom: 0;
-            left: 64%;
-            display: block;
-            width: auto;
-            max-width: none;
-            height: 100%;
-            filter: drop-shadow(0 1.25rem 1.8rem rgba(0, 0, 0, 0.24));
-            transform: translateX(-50%);
-        }
-
-        .about-section__copy {
-            --about-copy-y: -0.9rem;
-            max-width: 38rem;
-            padding-top: 0.05rem;
-            transform: translateY(var(--about-copy-y));
-        }
-
-        .js .about-section__copy {
-            opacity: 0;
-            clip-path: inset(0 100% 0 0);
-            transform: translate(-5rem, var(--about-copy-y));
-            transition:
-                opacity 650ms ease,
-                clip-path 900ms cubic-bezier(0.22, 1, 0.36, 1),
-                transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
-            will-change: opacity, clip-path, transform;
-        }
-
-        .js .about-section__copy.is-in-view {
-            opacity: 1;
-            clip-path: inset(0);
-            transform: translate(0, var(--about-copy-y));
-        }
-
-        .about-section__copy p {
-            margin: 0;
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: clamp(1.12rem, 2.15vw, 1.8rem);
-            font-weight: 400;
-            letter-spacing: -0.042em;
-            line-height: 1.42;
-        }
-
-        .about-section__index {
-            position: absolute;
-            right: max(var(--page-padding), calc((100vw - var(--sidebar-rail) - var(--about-content-max)) / 2));
-            bottom: clamp(3rem, 8.5vh, 5rem);
-            font-family: "PP Neue Montreal", "Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-size: 1.05rem;
-            letter-spacing: -0.03em;
-        }
-
-        @media (max-width: 720px) {
-            .toc-sidebar {
-                width: var(--sidebar-expanded);
-                transform: translateX(-100%);
-            }
-
-            .toc-sidebar[data-open="true"] {
-                transform: translateX(0);
-            }
-
-            .toc-sidebar__heading,
-            .toc-sidebar__label {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            body.nav-open {
-                overflow: hidden;
-            }
-
-            body.nav-open .toc-scrim {
-                opacity: 1;
-                pointer-events: auto;
-            }
-
-            .landing {
-                background-position: 48% center;
-            }
-
-            .topline {
-                top: clamp(1.5rem, 5.5vh, 2.5rem);
-                left: var(--page-padding);
-                gap: 1rem;
-                font-size: clamp(0.66rem, 2.9vw, 0.86rem);
-            }
-
-            .portfolio-title {
-                top: clamp(7.1rem, 19vh, 10rem);
-                font-size: clamp(5rem, 23vw, 8.25rem);
-            }
-
-            .portrait {
-                bottom: -1%;
-                height: clamp(27rem, 67svh, 36rem);
-                max-width: 116vw;
-            }
-
-            .role {
-                top: 66%;
-                font-size: clamp(0.92rem, 4.5vw, 1.28rem);
-            }
-
-            .about-section {
-                height: auto;
-                min-height: auto;
-                padding: 4.5rem var(--page-padding) 5rem;
-                overflow: hidden;
-            }
-
-            .about-section__inner {
-                height: auto;
-            }
-
-            .about-section__title {
-                margin-bottom: 2rem;
-                font-size: clamp(3.1rem, 15vw, 4.5rem);
-            }
-
-            .about-section__grid {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 2.75rem;
-            }
-
-            .about-section__visual {
-                width: 100%;
-                height: auto;
-                min-height: clamp(23rem, 108vw, 31rem);
-                transform: none;
-            }
-
-            .about-section__portrait {
-                left: 56%;
-                width: auto;
-                height: 100%;
-            }
-
-            .about-section__copy {
-                --about-copy-y: 0rem;
-                max-width: none;
-                padding: 0;
-                transform: none;
-            }
-
-            .about-section__copy p {
-                font-size: clamp(1.05rem, 5.4vw, 1.35rem);
-                line-height: 1.48;
-            }
-
-            .about-section__index {
-                right: var(--page-padding);
-                bottom: 1.75rem;
-            }
-        }
-
-        @media (min-width: 721px) and (max-width: 940px) {
-            .about-section {
-                height: auto;
-                min-height: auto;
-                padding-bottom: 5rem;
-                overflow: hidden;
-            }
-
-            .about-section__inner {
-                height: auto;
-            }
-
-            .about-section__grid {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 3rem;
-            }
-
-            .about-section__visual {
-                width: min(30rem, 100%);
-                height: auto;
-                min-height: 32rem;
-                transform: none;
-            }
-
-            .about-section__copy {
-                --about-copy-y: 0rem;
-                max-width: 40rem;
-                transform: none;
-            }
-        }
-
-        @media (min-width: 1400px) {
-            .about-section__portrait {
-                left: 62%;
-                height: 96%;
-            }
-        }
-
-        @media (max-width: 420px) {
-            .portfolio-title {
-                top: 20vh;
-                font-size: 21vw;
-            }
-
-            .portrait {
-                bottom: -1%;
-                height: 61svh;
-                max-width: 128vw;
-            }
-
-            .role {
-                top: 68%;
-            }
-        }
-
-        @media (max-height: 620px) and (min-width: 721px) {
-            .topline {
-                top: 2.25rem;
-            }
-
-            .portfolio-title {
-                top: 9rem;
-            }
-
-            .portrait {
-                height: 65vh;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .page-view.is-active {
-                animation: none;
-            }
-
-            .portfolio-title__character {
-                opacity: 1;
-            }
-
-            .portfolio-title__cursor {
-                display: none;
-            }
-
-            .js .about-section__copy,
-            .js .about-section__copy.is-in-view {
-                opacity: 1;
-                clip-path: none;
-                transform: translate(0, var(--about-copy-y));
-                transition: none;
-            }
-        }
-
-    </style>
+    <script src="static/js/head.js"></script>
+    <link rel="preload" href="static/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="static/fonts/pinyon-script-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="preload" href="static/media/images/bg.png" as="image">
+    <link rel="preload" href="static/media/images/hero-cutout.png" as="image">
+    <link rel="preload" href="static/media/images/about-cutout-final.png" as="image">
 </head>
 
 <body>
@@ -1078,7 +122,7 @@
                     class="portfolio-title__character">o</span><span class="portfolio-title__cursor">|</span></span>
         </h1>
 
-        <img class="portrait" src="media/images/hero-cutout.png"
+        <img class="portrait" src="static/media/images/hero-cutout.png"
             alt="Jerome Balangue wearing a black suit with his arms crossed" width="727" height="1236">
 
         <p class="role">Graphic Artist / Video Editor</p>
@@ -1090,7 +134,7 @@
 
             <div class="about-section__grid">
                 <figure class="about-section__visual">
-                    <img class="about-section__portrait" src="media/images/about-cutout-final.png"
+                    <img class="about-section__portrait" src="static/media/images/about-cutout-final.png"
                         alt="Jerome Balangue holding an open laptop" width="910" height="959" loading="lazy">
                 </figure>
 
@@ -1107,169 +151,456 @@
         <span class="about-section__index" aria-hidden="true">[1]</span>
     </section>
 
-    <script>
-        const navToggle = document.querySelector(".nav-toggle");
-        const sidebar = document.querySelector(".toc-sidebar");
-        const scrim = document.querySelector(".toc-scrim");
-        const navLabel = navToggle.querySelector(".sr-only");
-        const pageViews = [...document.querySelectorAll(".page-view")];
-        const pageLinks = [...sidebar.querySelectorAll('a[href^="#"]')];
-        const mobileSidebar = window.matchMedia("(max-width: 720px)");
-        const portfolioCharacters = [...document.querySelectorAll(".portfolio-title__character")];
-        const portfolioCursor = document.querySelector(".portfolio-title__cursor");
-        const aboutCopy = document.querySelector(".about-section__copy");
-        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let lastTypedCharacter = null;
+    <section class="education-section page-view" id="education" data-page="education"
+        aria-labelledby="education-title">
+        <div class="education-section__inner">
+            <h2 class="education-section__title" id="education-title">Education</h2>
 
-        const positionPortfolioCursor = (character) => {
-            const cursorPosition = character ? character.offsetLeft + character.offsetWidth : 0;
-            portfolioCursor.style.left = `${cursorPosition}px`;
-        };
+            <ol class="education-timeline" aria-label="Education timeline">
+                <li class="education-timeline__item education-timeline__item--right">
+                    <p class="education-timeline__date">2021—2025</p>
+                    <span class="education-timeline__axis" aria-hidden="true"></span>
+                    <article class="education-timeline__card">
+                        <p class="education-timeline__eyebrow">College</p>
+                        <h3>Pamantasan ng Lungsod ng Muntinlupa</h3>
+                        <p>Bachelor of Science in Business Administration</p>
+                    </article>
+                </li>
 
-        const startPortfolioTyping = () => {
-            if (reducedMotion.matches) {
-                portfolioCharacters.forEach((character) => character.classList.add("is-typed"));
-                return;
-            }
+                <li class="education-timeline__item education-timeline__item--left">
+                    <article class="education-timeline__card">
+                        <p class="education-timeline__eyebrow">Senior High School</p>
+                        <h3>Muntinlupa National High School Main</h3>
+                        <p>Accountancy, Business and Management</p>
+                    </article>
+                    <span class="education-timeline__axis" aria-hidden="true"></span>
+                    <p class="education-timeline__date">2019—2021</p>
+                </li>
 
-            let characterIndex = 0;
+                <li class="education-timeline__item education-timeline__item--right">
+                    <p class="education-timeline__date">Training</p>
+                    <span class="education-timeline__axis" aria-hidden="true"></span>
+                    <article class="education-timeline__card">
+                        <p class="education-timeline__eyebrow">Additional Training</p>
+                        <h3>Business Meta Suite</h3>
+                        <p>Organized by PARECO by Filinvest Land Inc.</p>
+                    </article>
+                </li>
+            </ol>
 
-            const typeNextCharacter = () => {
-                if (characterIndex >= portfolioCharacters.length) return;
+            <span class="education-section__index" aria-hidden="true">[2]</span>
+        </div>
+    </section>
 
-                lastTypedCharacter = portfolioCharacters[characterIndex];
-                lastTypedCharacter.classList.add("is-typed");
-                requestAnimationFrame(() => positionPortfolioCursor(lastTypedCharacter));
-                characterIndex += 1;
+    <section class="social-section page-view" id="social-media-design" data-page="social-media-design"
+        aria-labelledby="social-title">
+        <div class="social-section__inner">
+            <header class="social-section__header">
+                <p class="social-section__eyebrow">Selected Work</p>
+                <h2 class="social-section__title" id="social-title">Social Media Designs</h2>
+                <p class="social-section__intro">
+                    Designed high-converting social media content for online businesses and personal brands.
+                </p>
+            </header>
 
-                if (characterIndex === portfolioCharacters.length) {
-                    window.setTimeout(() => portfolioCursor.classList.add("is-finished"), 2000);
-                } else {
-                    window.setTimeout(typeNextCharacter, 260);
-                }
-            };
+            <div class="social-filters" role="group" aria-label="Filter social media designs">
+                <button class="social-filters__button is-active" type="button" data-social-filter="all"
+                    aria-pressed="true">All</button>
+                <button class="social-filters__button" type="button" data-social-filter="solar"
+                    aria-pressed="false">Solar</button>
+                <button class="social-filters__button" type="button" data-social-filter="real-estate"
+                    aria-pressed="false">Real Estate</button>
+                <button class="social-filters__button" type="button" data-social-filter="product"
+                    aria-pressed="false">Product</button>
+                <button class="social-filters__button" type="button" data-social-filter="campaign"
+                    aria-pressed="false">Campaign</button>
+            </div>
 
-            window.setTimeout(typeNextCharacter, 1500);
-        };
+            <div class="social-carousel" aria-label="Social media design gallery">
+                <div class="social-carousel__stage">
+                    <button class="social-carousel__slide" type="button" data-social-category="product campaign"
+                        aria-label="Feature Prefab Solutions sold-out campaign">
+                        <img src="static/media/images/SOLD OUT POSTER FOR PREFAB.png"
+                            alt="Prefab Solutions sold-out social media campaign" loading="lazy">
+                    </button>
 
-        if (document.readyState === "complete") {
-            startPortfolioTyping();
-        } else {
-            window.addEventListener("load", startPortfolioTyping, { once: true });
-        }
+                    <button class="social-carousel__slide" type="button" data-social-category="product campaign"
+                        aria-label="Feature TCL air conditioner campaign">
+                        <img src="static/media/images/5 (1).png"
+                            alt="TCL air conditioner promotional social media design" loading="lazy">
+                    </button>
 
-        window.addEventListener("resize", () => positionPortfolioCursor(lastTypedCharacter));
+                    <button class="social-carousel__slide" type="button" data-social-category="solar product"
+                        aria-label="Feature Avantech Saturn hybrid inverter">
+                        <img src="static/media/images/212.jpg"
+                            alt="Avantech Saturn hybrid inverter social media design" loading="lazy">
+                    </button>
 
-        if (reducedMotion.matches) {
-            aboutCopy.classList.add("is-in-view");
-        } else {
-            const aboutCopyObserver = new IntersectionObserver(([entry]) => {
-                aboutCopy.classList.toggle("is-in-view", entry.isIntersecting);
-            }, {
-                rootMargin: "-18% 0px -18% 0px",
-                threshold: 0.01
-            });
+                    <button class="social-carousel__slide" type="button" data-social-category="solar campaign"
+                        aria-label="Feature Avantech hybrid system package">
+                        <img src="static/media/images/53.png"
+                            alt="Avantech 12 kilowatt hybrid system campaign" loading="lazy">
+                    </button>
 
-            aboutCopyObserver.observe(aboutCopy);
-        }
+                    <button class="social-carousel__slide" type="button" data-social-category="real-estate campaign"
+                        aria-label="Feature Walnut property campaign">
+                        <img src="static/media/images/FB_IMG_1784076744122.jpg"
+                            alt="Walnut house real-estate social media design" loading="lazy">
+                    </button>
 
-        const syncSidebarAvailability = () => {
-            const isHiddenMobileMenu = mobileSidebar.matches && sidebar.dataset.open !== "true";
-            sidebar.inert = isHiddenMobileMenu;
-            sidebar.setAttribute("aria-hidden", String(isHiddenMobileMenu));
-        };
+                    <button class="social-carousel__slide" type="button" data-social-category="real-estate campaign"
+                        aria-label="Feature Walnut property details">
+                        <img src="static/media/images/FB_IMG_1784076746519.jpg"
+                            alt="Walnut house features social media design" loading="lazy">
+                    </button>
 
-        const setSidebarOpen = (isOpen) => {
-            sidebar.dataset.open = String(isOpen);
-            navToggle.setAttribute("aria-expanded", String(isOpen));
-            navLabel.textContent = isOpen ? "Close table of contents" : "Open table of contents";
-            document.body.classList.toggle("nav-open", isOpen);
-            syncSidebarAvailability();
-        };
+                    <button class="social-carousel__slide" type="button" data-social-category="solar campaign"
+                        aria-label="Feature Save More with Solar campaign">
+                        <img src="static/media/images/POSTER FOR POSTING (12).png"
+                            alt="Save More with Solar promotional design" loading="lazy">
+                    </button>
 
-        const pageExists = (pageId) => pageViews.some((view) => view.dataset.page === pageId);
+                    <button class="social-carousel__slide" type="button" data-social-category="solar product"
+                        aria-label="Feature Solar Storage Solutions campaign">
+                        <img src="static/media/images/23_20251210_163744_0022.png"
+                            alt="High-performance solar storage solutions design" loading="lazy">
+                    </button>
 
-        const showPage = (requestedPage, shouldScroll = true) => {
-            const pageId = pageExists(requestedPage) ? requestedPage : "home";
+                    <button class="social-carousel__slide" type="button" data-social-category="solar campaign"
+                        aria-label="Feature Brighter Choice campaign">
+                        <img src="static/media/images/101.png"
+                            alt="Avantech brighter choice hybrid power system design" loading="lazy">
+                    </button>
 
-            pageViews.forEach((view) => {
-                const isActive = view.dataset.page === pageId;
-                view.classList.toggle("is-active", isActive);
-                view.inert = !isActive;
-                view.setAttribute("aria-hidden", String(!isActive));
-            });
+                    <button class="social-carousel__slide" type="button" data-social-category="campaign"
+                        aria-label="Feature Palm Sunday campaign">
+                        <img src="static/media/images/12.png"
+                            alt="Palm Sunday commemorative social media design" loading="lazy">
+                    </button>
+                </div>
 
-            pageLinks.forEach((link) => {
-                const isCurrent = link.getAttribute("href") === `#${pageId}`;
-                if (isCurrent) {
-                    link.setAttribute("aria-current", "page");
-                } else {
-                    link.removeAttribute("aria-current");
-                }
-            });
+                <div class="social-carousel__controls">
+                    <button class="social-carousel__control social-carousel__control--previous" type="button"
+                        aria-label="Previous social media design">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m14.5 5-7 7 7 7"></path>
+                        </svg>
+                    </button>
+                    <p class="social-carousel__counter" aria-live="polite">
+                        <span data-social-current>01</span>
+                        <span aria-hidden="true">/</span>
+                        <span data-social-total>10</span>
+                    </p>
+                    <button class="social-carousel__control social-carousel__control--next" type="button"
+                        aria-label="Next social media design">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m9.5 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
 
-            if (pageId !== "about-me") {
-                aboutCopy.classList.remove("is-in-view");
-            }
+            <span class="social-section__index" aria-hidden="true">[3]</span>
+        </div>
+    </section>
 
-            document.body.dataset.page = pageId;
-            document.title = pageId === "about-me"
-                ? "About Me | Jerome Balangue"
-                : "Jerome Balangue | Portfolio";
+    <section class="print-section page-view" id="print-marketing-materials" data-page="print-marketing-materials"
+        aria-labelledby="print-title">
+        <div class="print-section__inner">
+            <header class="print-section__header">
+                <div>
+                    <p class="print-section__eyebrow">Brand Collateral</p>
+                    <h2 class="print-section__title" id="print-title">Print &amp; Marketing Materials</h2>
+                </div>
 
-            if (shouldScroll) window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        };
+                <p class="print-section__intro">
+                    Designed marketing materials that combine strong visuals with clear messaging.
+                </p>
+            </header>
 
-        const navigateToPage = (pageId) => {
-            if (!pageExists(pageId)) return;
+            <div class="print-showcase" aria-label="Interactive print and marketing material mockups">
+                <button class="print-object print-object--banner" type="button" data-print-kind="banner"
+                    data-print-title="Roll Up Banner"
+                    data-print-image="static/media/images/0fde0c3d-ccfb-47b6-8f83-031fdc73c57c.png"
+                    aria-label="Open interactive 3D view of the Roll Up Banner">
+                    <span class="print-object__model" aria-hidden="true">
+                        <span class="print-object__surface">
+                            <img src="static/media/images/0fde0c3d-ccfb-47b6-8f83-031fdc73c57c.png"
+                                alt="" width="948" height="1659" loading="lazy" draggable="false">
+                        </span>
+                    </span>
+                    <span class="print-object__label">Roll Up Banner</span>
+                </button>
 
-            if (document.body.dataset.page !== pageId) {
-                window.history.pushState({ page: pageId }, "", `#${pageId}`);
-            }
+                <button class="print-object print-object--calling-card" type="button" data-print-kind="card"
+                    data-print-title="Calling Card" data-print-image="static/media/images/26.png"
+                    data-print-back="static/media/images/25.png"
+                    aria-label="Open interactive 3D view of the Calling Card">
+                    <span class="print-object__model" aria-hidden="true">
+                        <span class="print-object__surface print-object__surface--secondary">
+                            <img src="static/media/images/26.png" alt="" width="1050" height="600" loading="lazy"
+                                draggable="false">
+                        </span>
+                        <span class="print-object__surface print-object__surface--primary">
+                            <img src="static/media/images/25.png" alt="" width="1050" height="600" loading="lazy"
+                                draggable="false">
+                        </span>
+                    </span>
+                    <span class="print-object__label">Calling Card</span>
+                </button>
 
-            showPage(pageId);
-        };
+                <button class="print-object print-object--notebook" type="button" data-print-kind="gift"
+                    data-print-title="Giveaway Notebook and Pen"
+                    data-print-image="static/media/images/POSTER FOR POSTING (7).jpg"
+                    aria-label="Open interactive 3D view of the Giveaway Notebook and Pen">
+                    <span class="print-object__model" aria-hidden="true">
+                        <span class="print-object__surface">
+                            <img src="static/media/images/POSTER FOR POSTING (7).jpg" alt="" width="1080" height="1350"
+                                loading="lazy" draggable="false">
+                        </span>
+                    </span>
+                    <span class="print-object__label">Giveaway Notebook &amp; Pen</span>
+                </button>
 
-        navToggle.addEventListener("click", () => {
-            setSidebarOpen(sidebar.dataset.open !== "true");
-        });
+                <button class="print-object print-object--booth" type="button" data-print-kind="booth"
+                    data-print-title="Collapsible Booth"
+                    data-print-image="static/media/images/FOR ACTUAL MODEL BOOTH (1).png"
+                    aria-label="Open interactive 3D view of the Collapsible Booth">
+                    <span class="print-object__model" aria-hidden="true">
+                        <span class="print-object__surface">
+                            <img src="static/media/images/FOR ACTUAL MODEL BOOTH (1).png" alt="" width="2245"
+                                height="1587" loading="lazy" draggable="false">
+                        </span>
+                    </span>
+                    <span class="print-object__label">Collapsible Booth</span>
+                </button>
 
-        scrim.addEventListener("click", () => setSidebarOpen(false));
+                <button class="print-object print-object--flyer" type="button" data-print-kind="flyer"
+                    data-print-title="Solar Product Flyer" data-print-image="static/media/images/3.png"
+                    data-print-back="static/media/images/4.png"
+                    aria-label="Open interactive 3D view of the Solar Product Flyer">
+                    <span class="print-object__model" aria-hidden="true">
+                        <span class="print-object__surface print-object__surface--secondary">
+                            <img src="static/media/images/4.png" alt="" width="1414" height="2000" loading="lazy"
+                                draggable="false">
+                        </span>
+                        <span class="print-object__surface print-object__surface--primary">
+                            <img src="static/media/images/3.png" alt="" width="1414" height="2000" loading="lazy"
+                                draggable="false">
+                        </span>
+                    </span>
+                    <span class="print-object__label">Flyer</span>
+                </button>
 
-        document.addEventListener("click", (event) => {
-            if (
-                sidebar.dataset.open === "true" &&
-                !sidebar.contains(event.target) &&
-                !navToggle.contains(event.target)
-            ) {
-                setSidebarOpen(false);
-            }
-        });
+            </div>
 
-        pageLinks.forEach((link) => {
-            link.addEventListener("click", (event) => {
-                event.preventDefault();
-                const pageId = link.getAttribute("href").slice(1);
-                navigateToPage(pageId);
-                setSidebarOpen(false);
-            });
-        });
+            <span class="print-section__index" aria-hidden="true">[4]</span>
+        </div>
+    </section>
 
-        window.addEventListener("popstate", () => {
-            showPage(window.location.hash.slice(1) || "home");
-        });
+    <div class="social-lightbox" role="dialog" aria-modal="true" aria-labelledby="social-lightbox-title"
+        aria-hidden="true">
+        <button class="social-lightbox__backdrop" type="button" tabindex="-1"
+            aria-label="Close image viewer"></button>
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape" && sidebar.dataset.open === "true") {
-                setSidebarOpen(false);
-                navToggle.focus();
-            }
-        });
+        <div class="social-lightbox__dialog">
+            <h2 class="sr-only" id="social-lightbox-title">Social media design viewer</h2>
 
-        mobileSidebar.addEventListener("change", syncSidebarAvailability);
-        showPage(window.location.hash.slice(1) || "home", false);
-        syncSidebarAvailability();
-    </script>
+            <button class="social-lightbox__close" type="button" aria-label="Close image viewer">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6 6 18"></path>
+                </svg>
+            </button>
+
+            <button class="social-lightbox__control social-lightbox__control--previous" type="button"
+                aria-label="View previous social media design">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m14.5 5-7 7 7 7"></path>
+                </svg>
+            </button>
+
+            <figure class="social-lightbox__figure">
+                <img class="social-lightbox__image" src="" alt="">
+                <figcaption class="social-lightbox__caption">
+                    <span data-social-lightbox-caption></span>
+                    <span class="social-lightbox__counter" aria-live="polite">
+                        <span data-social-lightbox-current>01</span>
+                        <span aria-hidden="true">/</span>
+                        <span data-social-lightbox-total>10</span>
+                    </span>
+                </figcaption>
+            </figure>
+
+            <button class="social-lightbox__control social-lightbox__control--next" type="button"
+                aria-label="View next social media design">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m9.5 5 7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="print-viewer" role="dialog" aria-modal="true" aria-labelledby="print-viewer-title"
+        aria-describedby="print-viewer-instructions" aria-hidden="true">
+        <button class="print-viewer__backdrop" type="button" tabindex="-1"
+            aria-label="Close 3D material viewer"></button>
+
+        <div class="print-viewer__dialog">
+            <header class="print-viewer__header">
+                <div>
+                    <p class="print-viewer__eyebrow">Interactive 3D Preview</p>
+                    <h2 class="print-viewer__title" id="print-viewer-title">Print material</h2>
+                </div>
+
+                <button class="print-viewer__close" type="button" aria-label="Close 3D material viewer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 6l12 12M18 6 6 18"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="print-viewer__stage">
+                <canvas class="print-viewer__webgl" aria-hidden="true"></canvas>
+
+                <div class="print-viewer__rotator" tabindex="0" role="img"
+                    aria-label="Draggable 3D preview of the selected print material">
+                    <div class="print-viewer__model">
+                        <div class="print-viewer__flat-model">
+                            <div class="print-viewer__face print-viewer__face--front">
+                                <img class="print-viewer__image print-viewer__image--front" src="" alt=""
+                                    draggable="false">
+                            </div>
+                            <div class="print-viewer__face print-viewer__face--back">
+                                <img class="print-viewer__image print-viewer__image--back" src="" alt=""
+                                    draggable="false">
+                            </div>
+                            <span class="print-viewer__edge print-viewer__edge--top" aria-hidden="true"></span>
+                            <span class="print-viewer__edge print-viewer__edge--right" aria-hidden="true"></span>
+                            <span class="print-viewer__edge print-viewer__edge--bottom" aria-hidden="true"></span>
+                            <span class="print-viewer__edge print-viewer__edge--left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="print-banner3d" aria-hidden="true">
+                            <div class="print-model-box print-banner3d__panel">
+                                <span class="print-model-box__face print-model-box__face--front">
+                                    <img src="static/media/images/0fde0c3d-ccfb-47b6-8f83-031fdc73c57c.png" alt=""
+                                        draggable="false">
+                                </span>
+                                <span class="print-model-box__face print-model-box__face--back">
+                                    <img src="static/media/images/0fde0c3d-ccfb-47b6-8f83-031fdc73c57c.png" alt=""
+                                        draggable="false">
+                                </span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-banner3d__rail">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-banner3d__base">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-banner3d__foot print-banner3d__foot--left">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-banner3d__foot print-banner3d__foot--right">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <span class="print-banner3d__shadow"></span>
+                        </div>
+
+                        <div class="print-booth3d" aria-hidden="true">
+                            <div class="print-model-box print-booth3d__body print-booth3d__body--left">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-booth3d__body print-booth3d__body--center">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-booth3d__body print-booth3d__body--right">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <div class="print-model-box print-booth3d__header">
+                                <span class="print-model-box__face print-model-box__face--front"></span>
+                                <span class="print-model-box__face print-model-box__face--back"></span>
+                                <span class="print-model-box__face print-model-box__face--right"></span>
+                                <span class="print-model-box__face print-model-box__face--left"></span>
+                                <span class="print-model-box__face print-model-box__face--top"></span>
+                                <span class="print-model-box__face print-model-box__face--bottom"></span>
+                            </div>
+
+                            <span class="print-booth3d__pole print-booth3d__pole--one"></span>
+                            <span class="print-booth3d__pole print-booth3d__pole--two"></span>
+                            <span class="print-booth3d__pole print-booth3d__pole--three"></span>
+                            <span class="print-booth3d__pole print-booth3d__pole--four"></span>
+
+                            <img class="print-booth3d__art print-booth3d__art--front"
+                                src="static/media/images/FOR ACTUAL MODEL BOOTH (1).png" alt="" draggable="false">
+                            <img class="print-booth3d__art print-booth3d__art--back"
+                                src="static/media/images/FOR ACTUAL MODEL BOOTH (1).png" alt="" draggable="false">
+                            <span class="print-booth3d__shadow"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <span class="print-viewer__orbit print-viewer__orbit--one" aria-hidden="true"></span>
+                <span class="print-viewer__orbit print-viewer__orbit--two" aria-hidden="true"></span>
+            </div>
+
+            <footer class="print-viewer__footer">
+                <p id="print-viewer-instructions">
+                    Drag the model to rotate. You can also use the arrow keys.
+                </p>
+                <button class="print-viewer__reset" type="button">Reset view</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="static/js/print-3d.bundle.js"></script>
+    <script src="static/js/main.js"></script>
 </body>
 
 </html>
